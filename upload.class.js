@@ -91,13 +91,14 @@ Westsworld.Upload = Class.create({
 	 */
 	_createIFrame: function() {
 		// creates the frame template
-		var iframeTemplate = new Template('<iframe id="#{iframeId}" style="display: none;"></iframe>');
+		var iframeTemplate = new Template('<iframe id="#{iframeId}" name="#{iframeName}" style="display: none;"></iframe>');
 		
 		// creates the frame id, based on the actual form's name and timestamp
 		var iframeId = 'iframe_for_'+this.getOption('formId')+'_'+new Date().getTime();
 		
 		Element.insert(this.oldFormObj, {'after': iframeTemplate.evaluate({
-				iframeId: iframeId
+				iframeId: iframeId,
+				iframeName: iframeId
 			})
 		});
 		
