@@ -4,4 +4,9 @@ It's goal is to mimic the behavior of the google gmail attach file component.
 So far, the component can be initialized on a form tag, (using the form's id). It will then hide the current form and add it's own.
 
 TODO:
-
+* Send the data to the actual action.
+* Hide the current file field.
+* Show a nice progress bar when uploading.
+* Create a new file field ready for uploading.
+* Remove the uploading field, when the upload is done.
+** Display a small message saying: "Upload done", then hide the field (2 secs delay?)
