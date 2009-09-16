@@ -25,9 +25,21 @@ Westsworld.Upload = Class.create({
 			// creates the form
 			this.createForm();
 			
-			document.observe('westsworld:components:upload:started', function() {
+			document.observe('westsworld:components:upload:started', function(event) {
 				console.log('"westsworld:components:upload:started" caught!');
-				this.createForm();
+
+				// takes the form id from the event parameters				
+				var formId = event.memo.formId;
+				
+				// hooks up the recieving event
+				document.observe('westsworld:components:upload:ended', function(event) {
+					console.log('"westsworld:components:upload:ended" caught!');
+				});
+				
+				// calls submit on the form
+				$(formId).submit();
+				
+				//this.createForm();
 			}.bind(this));
 		}
 		else {
@@ -39,10 +51,10 @@ Westsworld.Upload = Class.create({
 	 *	Creates the form with upload fields and other contents
 	 */
 	createForm: function() {
-		// creates the new form
-		var formId = this._createForm();
 		// creates the new iframe
-		var frameId = this._createIFrame(formId);
+		var frameId = this._createIFrame();
+		// creates the new form
+		var formId = this._createForm(frameId);
 		
 		this._createFormFields(formId, frameId);
 	},
@@ -51,9 +63,9 @@ Westsworld.Upload = Class.create({
 	 *	Creates a form to upload the data from.
 	 *	@return the created form's id.
 	 */
-	_createForm: function() {
+	_createForm: function(iframeId) {
 		// creates the form template
-		var formTemplate = new Template('<form id="#{formId}" action="#{action}" method="#{method}" enctype="#{enctype}"></form>');
+		var formTemplate = new Template('<form id="#{formId}" action="#{action}" method="#{method}" enctype="#{enctype}" target="#{iframeId}></form>');
 		
 		// creates the form id, based on the actual form's name and a timestamp
 		var formId = 'form_for_'+this.getOption('formId')+'_'+new Date().getTime();
@@ -63,7 +75,8 @@ Westsworld.Upload = Class.create({
 			formId: formId,
 			action: this.oldFormObj.action,
 			enctype: this.oldFormObj.enctype,
-			method: this.oldFormObj.method
+			method: this.oldFormObj.method,
+			iframeId: iframeId
 		});
 		
 		Element.insert(this.oldFormObj,{'after': formObj});
@@ -73,18 +86,17 @@ Westsworld.Upload = Class.create({
 	
 	
 	/**
-	 *	Creates an iframe to use for upload, for the given form (id).
-	 *	@param formId 				the form id to create the frame for
+	 *	Creates an iframe to use for upload.
 	 *	@return the id of the iframe created.
 	 */
-	_createIFrame: function(formId) {
+	_createIFrame: function() {
 		// creates the frame template
 		var iframeTemplate = new Template('<iframe id="#{iframeId}" style="display: none;"></iframe>');
 		
 		// creates the frame id, based on the actual form's name and timestamp
-		var iframeId = 'iframe_for_'+formId;
+		var iframeId = 'iframe_for_'+this.getOption('formId')+'_'+new Date().getTime();
 		
-		Element.insert(formId, {'after': iframeTemplate.evaluate({
+		Element.insert(this.oldFormObj, {'after': iframeTemplate.evaluate({
 				iframeId: iframeId
 			})
 		});
@@ -134,8 +146,7 @@ Westsworld.Upload = Class.create({
 				// adds an onchange event to the file upload object
 				if(inputObj.type == 'file') {
 					Event.observe(fieldId, 'change', function(event) {
-						alert('start the upload!');
-						document.fire('westsworld:components:upload:started');
+						document.fire('westsworld:components:upload:started', {formId: formId});
 					});
 				}
 			}
