@@ -1,0 +1,7 @@
+This is a small "Ajax-upload" component, written in javascript.
+It's goal is to mimic the behavior of the google gmail attach file component. 
+
+So far, the component can be initialized on a form tag, (using the form's id). It will then hide the current form and add it's own.
+
+TODO:
+
