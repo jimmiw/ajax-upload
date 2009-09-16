@@ -111,6 +111,8 @@ Westsworld.Upload = Class.create({
 	 *	@param frameId 				the id of the iframe to send the data to.
 	 */
 	_createFormFields: function(formId, frameId) {
+		var fieldTemplate = new Template('<div><input type="#{type}" name="#{name}" value="#{value}" id="#{id}" /></div>');
+		
 		// starts to add the fields to the form
 		var inputObjectArray = this.oldFormObj.getInputs();
 		var inputLength = inputObjectArray.length;
@@ -131,8 +133,6 @@ Westsworld.Upload = Class.create({
 			
 			// adds the field (only supports input fields atm!
 			if(addField && this._isFieldValid(inputObj)) {
-				var fieldTemplate = new Template('<div><input type="#{type}" name="#{name}" value="#{value}" id="#{id}" /></div>');
-				
 				var fieldId = 'field_for_'+inputObj.name+'_'+new Date().getTime();
 				
 				var fieldObj = fieldTemplate.evaluate({
