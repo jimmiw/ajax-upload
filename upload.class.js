@@ -1,7 +1,7 @@
 var Westsworld = (Westsworld == null)? {} : Westsworld;
 
 Westsworld.Upload = Class.create({
-	version: '1.0',
+	version: '0.3',
 	
 	initialize: function(options) {
 		this.setOptions(options);
