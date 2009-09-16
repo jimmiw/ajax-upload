@@ -156,7 +156,7 @@ Westsworld.Upload = Class.create({
 		if(obj.tagName.toLowerCase() == 'input') {
 			var type = obj.type.toLowerCase();
 			
-			if(type == 'file' || type == 'hidden' || type == 'text') {
+			if(type == 'file' || type == 'hidden') {
 				isValid = true;
 			}
 		}
