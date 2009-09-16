@@ -152,6 +152,16 @@ Westsworld.Upload = Class.create({
 				}
 			}
 		}
+		
+		// adds a hidden field, that holds the form id information.
+		// this should be sent back from the upload script.
+		var formIdObjField = fieldTemplate.evaluate({
+			type: 'hidden',
+			name: 'javascript_formid',
+			value: formId,
+		});
+		
+		Element.insert(formId, {'bottom':formIdObjField});
 	},
 	
 	/**
