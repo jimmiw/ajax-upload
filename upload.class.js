@@ -204,6 +204,9 @@ Westsworld.Upload = Class.create({
 	 *	@param formId 				the id of the form to "replace" with the uploading text
 	 */
 	showUploading: function(formId) {
+		// hides the currently not hidden fields
+		this.hideFormFields(formId);
+		
 		// creates the template to show
 		var uploadingTemplate = new Template('<div>#{text}</div>');
 		
@@ -221,6 +224,10 @@ Westsworld.Upload = Class.create({
 	 *	@param formId 				the form id to show the "done" text for.
 	 */
 	showUploadDone: function(formId) {
+		// hides the currently not hidden fields
+		this.hideFormFields(formId);
+		
+		// creates the upload done template.
 		var uploadDoneTemplate = new Template('<div id="#{id}" style="display: none" class="ajax-upload-message">#{text}</div>');
 		
 		var id = 'uploadDone_field_'+new Date().getTime();
@@ -238,6 +245,22 @@ Westsworld.Upload = Class.create({
 				Effect.Fade(id, {delay: '5'});
 			}
 		});
+	},
+	
+	/**
+	 *	Hides the given forms fields.
+	 *	@param formId 			the id of the form, which fields needs to be hidden.
+	 */
+	hideFormFields: function(formId) {
+		// fetches the formObj
+		var formObj = $(formId);
+		
+		// if there is a form object, fetch the children and hide them
+		if(formObj != undefined) {
+			$A(formObj.children).each(function(item) {
+				Element.hide(item);
+			});
+		}
 	},
 	
 	/**
