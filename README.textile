@@ -7,14 +7,17 @@ The newly added form's file field, will have an "onchange" event, that automatic
 After you have chosen a file to upload, a nice "Uploading File..." text appears and a new file field is added (with it's own form and iframe), ready to upload more data to the backend.
 
 h2. How to
-It's really easy to get started. All you need to do, is have a normal form, with the enctype set and have a file field inside it. Add the correct action and method (POST) and you are ready to start.
+
+It is really easy to get started. All you need to do, is have a normal form, with the enctype set and have a file field inside it. Add the correct action and method (POST) and you are ready to start.
 
 h3. Example
-I've added a simple example to get you started.
 
-bc
+I have added a small example to help you get started.
+
+
 
 h2. Options
+
 You can use the following options to pass to the object, when initializing it:
 
 |_. Option name |_. Description |
