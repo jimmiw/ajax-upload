@@ -215,6 +215,31 @@ Westsworld.Upload = Class.create({
 		);
 	},
 	
+	
+	/**
+	 *	Shows an "upload done" text
+	 *	@param formId 				the form id to show the "done" text for.
+	 */
+	showUploadDone: function(formId) {
+		var uploadDoneTemplate = new Template('<div id="#{id}" style="display: none" class="ajax-upload-message">#{text}</div>');
+		
+		var id = 'uploadDone_field_'+new Date().getTime();
+		
+		// inserts the uploadDoneTemplate into the current form
+		$(formId).insert(
+			uploadDoneTemplate.evaluate({
+				id: id,
+				text: this.getOption('uploadDoneText')
+			})
+		);
+		
+		Effect.Appear(id, {
+			afterFinish: function() {
+				Effect.Fade(id, {delay: '5'});
+			}
+		});
+	},
+	
 	/**
 	 *	Sets the options
 	 *	@param options 				the options to set.
@@ -227,18 +252,29 @@ Westsworld.Upload = Class.create({
 		
 		// adds the options to the options hash, if any are present
 		if(options) {
+			// sets the form id to use as a base form (get the information from)
 			if(options.formId != undefined) {
 				this.options.formId = options.formId;
 			}
+			// sets if the current fields in the form should be sent to the upload backend as well
 			if(options.includeFields != undefined) {
 				this.options.includeFields = options.includeFields;
 			}
+			// sets the uploading text
 			if(options.uploadingText != undefined) {
 				this.options.uploadingText = options.uploadingText;
 			}
 			else {
 				this.options.uploadingText = 'Uploading File...';
 			}
+			// sets the uploading done text.
+			if(options.uploadingText != undefined) {
+				this.options.uploadDoneText = options.uploadDoneText;
+			}
+			else {
+				this.options.uploadDoneText = 'Upload Done!';
+			}
+			
 		}
 	},
 	
