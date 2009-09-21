@@ -66,6 +66,14 @@ Westsworld.Upload = Class.create({
 		// creates the new form
 		var formId = this._createForm(frameId, previousObj);
 		
+		// small hack to move the iframe inside the form
+		var frameObj = $(frameId);
+		// removes the iframe
+		Element.remove(frameId);
+		// inserts the iframe into the form obj
+		$(formId).insert(frameObj);
+		// hack end
+		
 		this._createFormFields(formId, frameId);
 	},
 	
@@ -241,9 +249,17 @@ Westsworld.Upload = Class.create({
 			})
 		);
 		
+		// shows the upload done message
 		Effect.Appear(id, {
 			afterFinish: function() {
-				Effect.Fade(id, {delay: '5'});
+				// calls fade after 5secs
+				Effect.Fade(id, {
+					delay: '5',
+					afterFinish: function() {
+						// removes the form object
+						Element.remove(formId);
+					}
+				});
 			}
 		});
 	},
