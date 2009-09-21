@@ -16,9 +16,74 @@ I have added a small example to help you get started.
 
 To initialize the component, all you need is to call the following javascript:
 
-@new Westsworld.Upload({
+<code>new Westsworld.Upload({
   formId: 'uploadForm'
-});@
+});</code>
+
+The *formId* references the id of the form we are doing the magic on. But other that that, you are ready to upload your files!
+
+h2. More complete upload form
+
+A complete example of a page with an upload form, could be like the following:
+
+<code>
+<html>
+	<head>	
+		<title>Ajax upload demo</title>
+		<script type="text/javascript" src="scripts/prototype.js"></script>
+		<script type="text/javascript" src="scripts/scriptaculous.js"></script>
+		<script type="text/javascript" src="scripts/upload.class.js"></script>
+	</head>
+	<body>
+
+		<form id="uploadForm" method="post" action="upload_temp.html" enctype="multipart/form-data">
+			<input type="hidden" name="someId" value="1" />
+			<div>Choose a file to upload:</div>
+			<input type="file" name="file" /><br/>
+			<textarea name="textarea_name" id="textarea_id"></textarea><br/>
+			<input type="text" name="some_text_input_field" /><br/>
+			<input type="submit" value="Upload..." />
+		</form>
+	
+		<script type="text/javascript">
+			new Westsworld.Upload({
+				formId: 'uploadForm',
+				includeFields: true
+			});
+		</script>
+	</body>
+</html>
+</code>
+
+The same script, as earlier, is called at the bottom of the page. Please note the javascripts added in the HEAD section. Currently both prototype and scriptaculous ( and my script ofcourse) is needed to make it all work.
+
+h2. Upload Handling (the backend)
+
+But (yes, there's always a but), you need to fix your backend slightly. In order for the ajax upload to remove the old form, display a nice message when done etc, you need to call a javascript when you are done with the upload.
+
+This is actually more simple than it might seem.
+
+We need to "catch" a parameter from the POST request, and use this information to call a script. The parameter to catch is called: *javascript_formid*
+This parameter contains data about what form called the upload script. It is used to close and remove the form fields the component adds on your page.
+
+All you need to do, is to add the following to you upload.php/upload.asp/upload.whatever_extension_you_might_have file. (I'm using PHP as an example here, just exchange the $_POST['javascript_formid'] with what your language uses to fetch a post parameter)
+
+<code>
+<html>
+	<head>	
+		<title>Upload catcher temp file</title>
+		<script type="text/javascript" src="scripts/prototype.js"></script>
+	</head>
+	<body>
+		<script type="text/javascript">
+			console.log(window);
+			window.parent.document.fire('westsworld:components:upload:ended', {formId: '<?php echo $_POST["javascript_formid"]; ?>'});
+		</script>
+	</body>
+</html>
+</code>
+
+
 
 h2. Options
 
