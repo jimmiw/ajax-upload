@@ -25,18 +25,12 @@ Westsworld.Upload = Class.create({
 			// creates the form
 			this.createForm(this.oldFormObj);
 			
+			// connects the upload _started_ event
 			document.observe('westsworld:components:upload:started', function(event) {
 				console.log('"westsworld:components:upload:started" caught!');
 
 				// takes the form id from the event parameters				
 				var formId = event.memo.formId;
-				
-				// hooks up the recieving event
-				document.observe('westsworld:components:upload:ended', function(event) {
-					console.log('"westsworld:components:upload:ended" caught!');
-					
-					this.showUploadDone(event.memo.formId)
-				}.bind(this));
 				
 				// hides the form object, shows a uploading text
 				this.showUploading(formId);
@@ -48,6 +42,13 @@ Westsworld.Upload = Class.create({
 				$(formId).submit();
 				
 				//this.createForm();
+			}.bind(this));
+			
+			// connects the upload _done_ event
+			document.observe('westsworld:components:upload:ended', function(event) {
+				console.log('"westsworld:components:upload:ended" caught!');
+				
+				this.showUploadDone(event.memo.formId);
 			}.bind(this));
 		}
 		else {
