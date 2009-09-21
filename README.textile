@@ -26,7 +26,7 @@ h2. More complete upload form
 
 A complete example of a page with an upload form, could be like the following:
 
-<code>
+<pre>
 <html>
 	<head>	
 		<title>Ajax upload demo</title>
@@ -53,7 +53,7 @@ A complete example of a page with an upload form, could be like the following:
 		</script>
 	</body>
 </html>
-</code>
+</pre>
 
 The same script, as earlier, is called at the bottom of the page. Please note the javascripts added in the HEAD section. Currently both prototype and scriptaculous ( and my script ofcourse) is needed to make it all work.
 
@@ -68,7 +68,7 @@ This parameter contains data about what form called the upload script. It is use
 
 All you need to do, is to add the following to you upload.php/upload.asp/upload.whatever_extension_you_might_have file. (I'm using PHP as an example here, just exchange the $_POST['javascript_formid'] with what your language uses to fetch a post parameter)
 
-<code>
+<pre>
 <html>
 	<head>	
 		<title>Upload catcher temp file</title>
@@ -81,7 +81,7 @@ All you need to do, is to add the following to you upload.php/upload.asp/upload.
 		</script>
 	</body>
 </html>
-</code>
+</pre>
 
 
 
