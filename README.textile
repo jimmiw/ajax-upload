@@ -1,7 +1,7 @@
 This is a small "Ajax-upload" component, written in javascript.
 It's goal is to mimic the behavior of the google gmail attach file component.
 
-The project is inspired by the post: http://www.openjs.com/articles/ajax/ajax_file_upload/
+The project is inspired by the post: [http://www.openjs.com/articles/ajax/ajax_file_upload/]
 
 So far, the component can be initialized on a form tag, (using the form's id). It will then hide the current form and add it's own.
 The newly added form's file field, will have an "onchange" event, that automatically submits the chosen file, to the forms action.
