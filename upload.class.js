@@ -23,7 +23,7 @@ Westsworld.Upload = Class.create({
 			this.forms = [];
 			
 			// creates the form
-			this.createForm();
+			this.createForm(this.oldFormObj);
 			
 			document.observe('westsworld:components:upload:started', function(event) {
 				console.log('"westsworld:components:upload:started" caught!');
@@ -34,7 +34,15 @@ Westsworld.Upload = Class.create({
 				// hooks up the recieving event
 				document.observe('westsworld:components:upload:ended', function(event) {
 					console.log('"westsworld:components:upload:ended" caught!');
-				});
+					
+					this.showUploadDone(event.memo.formId)
+				}.bind(this));
+				
+				// hides the form object, shows a uploading text
+				this.showUploading(formId);
+				
+				// adds a new form, so the user can keep uploading
+				this.createForm(formId);
 				
 				// calls submit on the form
 				$(formId).submit();
@@ -49,21 +57,24 @@ Westsworld.Upload = Class.create({
 	
 	/**
 	 *	Creates the form with upload fields and other contents
+	 *	@param previousObj 					the object to add our form after. (e.g. the original form)
 	 */
-	createForm: function() {
+	createForm: function(previousObj) {
 		// creates the new iframe
 		var frameId = this._createIFrame();
 		// creates the new form
-		var formId = this._createForm(frameId);
+		var formId = this._createForm(frameId, previousObj);
 		
 		this._createFormFields(formId, frameId);
 	},
 	
 	/** 
 	 *	Creates a form to upload the data from.
+	 *	@param iframeId 						the iframe id to connect our form to (send the post to)
+	 *	@param previousObj 					the object to add our form after. (e.g. the original form)
 	 *	@return the created form's id.
 	 */
-	_createForm: function(iframeId) {
+	_createForm: function(iframeId, previousObj) {
 		// creates the form template
 		var formTemplate = new Template('<form id="#{formId}" action="#{action}" method="#{method}" enctype="#{enctype}" target="#{iframeId}></form>');
 		
@@ -79,7 +90,8 @@ Westsworld.Upload = Class.create({
 			iframeId: iframeId
 		});
 		
-		Element.insert(this.oldFormObj,{'after': formObj});
+		// inserts the new form after the previous object.
+		Element.insert($(previousObj),{'after': formObj});
 		
 		return formId;
 	},
@@ -186,6 +198,23 @@ Westsworld.Upload = Class.create({
 		return isValid;
 	},
 	
+	
+	/**
+	 *	Shows a nice uploading text.
+	 *	@param formId 				the id of the form to "replace" with the uploading text
+	 */
+	showUploading: function(formId) {
+		// creates the template to show
+		var uploadingTemplate = new Template('<div>#{text}</div>');
+		
+		// inserts the uploadingTextTemplate into the current form
+		$(formId).insert(
+			uploadingTemplate.evaluate({
+				text: this.getOption('uploadingText')}
+			)
+		);
+	},
+	
 	/**
 	 *	Sets the options
 	 *	@param options 				the options to set.
@@ -203,6 +232,12 @@ Westsworld.Upload = Class.create({
 			}
 			if(options.includeFields != undefined) {
 				this.options.includeFields = options.includeFields;
+			}
+			if(options.uploadingText != undefined) {
+				this.options.uploadingText = options.uploadingText;
+			}
+			else {
+				this.options.uploadingText = 'Uploading File...';
 			}
 		}
 	},
