@@ -14,7 +14,11 @@ h3. Example
 
 I have added a small example to help you get started.
 
+To initialize the component, all you need is to call the following javascript:
 
+@new Westsworld.Upload({
+  formId: 'uploadForm'
+});@
 
 h2. Options
 
@@ -22,11 +26,12 @@ You can use the following options to pass to the object, when initializing it:
 
 |_. Option name |_. Description |
 | formId | The id of the form to do the magic on. *REQUIRED* |
-| includeFields | If the upload should send the current fields to the upload. (e.g. hidden fields etc) |
+| includeFields | If the upload should send the current fields to the upload. (e.g. hidden fields etc). This is true as default |
 | uploadingText | Pass this to set a different text when uploading. |
 | uploadDoneText | Pass this to set a different upload done text. |
 
 h2. TODO
+
 List of things that could be fun to have / add.
 
 * Show a nice progress bar when uploading.
