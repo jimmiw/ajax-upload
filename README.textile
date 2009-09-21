@@ -3,13 +3,27 @@ It's goal is to mimic the behavior of the google gmail attach file component.
 
 So far, the component can be initialized on a form tag, (using the form's id). It will then hide the current form and add it's own.
 The newly added form's file field, will have an "onchange" event, that automatically submits the chosen file, to the forms action.
-A nice progressbar should then be displayed and a new file field should be added (with it's own form and iframe), ready to upload more data to the site.
 
+After you have chosen a file to upload, a nice "Uploading File..." text appears and a new file field is added (with it's own form and iframe), ready to upload more data to the backend.
 
-TODO:
-* Send the data to the actual action.
-* Hide the current file field.
+h2. How to
+It's really easy to get started. All you need to do, is have a normal form, with the enctype set and have a file field inside it. Add the correct action and method (POST) and you are ready to start.
+
+h3. Example
+I've added a simple example to get you started.
+
+bc
+
+h2. Options
+You can use the following options to pass to the object, when initializing it:
+
+|_. Option name |_. Description |
+| formId | The id of the form to do the magic on. *REQUIRED* |
+| includeFields | If the upload should send the current fields to the upload. (e.g. hidden fields etc) |
+| uploadingText | Pass this to set a different text when uploading. |
+| uploadDoneText | Pass this to set a different upload done text. |
+
+h2. TODO
+List of things that could be fun to have / add.
+
 * Show a nice progress bar when uploading.
-* Create a new file field ready for uploading.
-* Remove the uploading field, when the upload is done.
-** Display a small message saying: "Upload done", then hide the field (2 secs delay?)
