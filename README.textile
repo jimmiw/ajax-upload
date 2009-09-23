@@ -95,6 +95,35 @@ All you need to do, is to add the following to you upload-images.php/upload-imag
 </code></pre>
 
 
+h3. Using the event from the upload-images.php page.
+
+After talking with janusc (the designer I originally created the script for), he wanted me to include a few pointers on what you else could use the script for.
+
+On his page, he uses it for uploading images (yep...), and after he got it working, he of course wanted more.
+
+"Could the script reload the images on my page" he asked. And yes, it can. Well, sort of. All you need to do, is use the event that is sent back the frontend, and call an additional javascript.
+
+h4. Here is what he did
+
+First he added a div to hold the images:
+<pre><code>
+<div id="recently-uploaded"></div>
+</code></pre>
+
+Then he added a javascript to hook up on the event.
+<pre><code>
+<script type="text/javascript">
+	document.observe('westsworld:components:upload:ended', function(event) {
+		new Ajax.Updater('recently-uploaded','/recently-uploaded-images.php', {
+			parameters: {
+				'gallery-id': 1
+			}
+		});
+	});
+</script>
+</code></pre>
+
+This meant, that whenever he uploaded an image, the newest images would be displayed. With this feature, a user could easily delete the images again.
 
 h2. TODO
 
