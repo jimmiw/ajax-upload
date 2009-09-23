@@ -8,6 +8,17 @@ The newly added form's file field, will have an "onchange" event, that automatic
 
 After you have chosen a file to upload, a nice "Uploading File..." text appears and a new file field is added (with it's own form and iframe), ready to upload more data to the backend.
 
+
+h2. Options
+
+You can use the following options to pass to the object, when initializing it:
+
+|_. Option name |_. Description |
+| formId | The id of the form to do the magic on. *REQUIRED* |
+| includeFields | If the upload should send the current fields to the upload. (e.g. hidden fields etc). This is true as default |
+| uploadingText | Pass this to set a different text when uploading. |
+| uploadDoneText | Pass this to set a different upload done text. |
+
 h2. How to
 
 It is really easy to get started. All you need to do, is have a normal form, with the enctype set and have a file field inside it. Add the correct action and method (POST) and you are ready to start.
@@ -38,7 +49,7 @@ A complete example of a page with an upload form, could be like the following:
 	</head>
 	<body>
 
-		<form id="uploadForm" method="post" action="upload_temp.html" enctype="multipart/form-data">
+		<form id="uploadForm" method="post" action="upload-images.php" enctype="multipart/form-data">
 			<input type="hidden" name="someId" value="1" />
 			<div>Choose a file to upload:</div>
 			<input type="file" name="file" /><br/>
@@ -49,8 +60,7 @@ A complete example of a page with an upload form, could be like the following:
 	
 		<script type="text/javascript">
 			new Westsworld.Upload({
-				formId: 'uploadForm',
-				includeFields: true
+				formId: 'uploadForm'
 			});
 		</script>
 	</body>
@@ -68,7 +78,7 @@ This is actually more simple than it might seem.
 We need to "catch" a parameter from the POST request, and use this information to call a script. The parameter to catch is called: *javascript_formid*
 This parameter contains data about what form called the upload script. It is used to close and remove the form fields the component adds on your page.
 
-All you need to do, is to add the following to you upload.php/upload.asp/upload.whatever_extension_you_might_have file. (I'm using PHP as an example here, just exchange the $_POST['javascript_formid'] with what your language uses to fetch a post parameter)
+All you need to do, is to add the following to you upload-images.php/upload-images.asp/upload-images.whatever_extension_you_might_have file. (I'm using PHP as an example here, just exchange the $_POST['javascript_formid'] with what your language uses to fetch a post parameter)
 
 <pre><code>
 <html>
@@ -78,7 +88,6 @@ All you need to do, is to add the following to you upload.php/upload.asp/upload.
 	</head>
 	<body>
 		<script type="text/javascript">
-			console.log(window);
 			window.parent.document.fire('westsworld:components:upload:ended', {formId: '<?php echo $_POST["javascript_formid"]; ?>'});
 		</script>
 	</body>
@@ -86,16 +95,6 @@ All you need to do, is to add the following to you upload.php/upload.asp/upload.
 </code></pre>
 
 
-
-h2. Options
-
-You can use the following options to pass to the object, when initializing it:
-
-|_. Option name |_. Description |
-| formId | The id of the form to do the magic on. *REQUIRED* |
-| includeFields | If the upload should send the current fields to the upload. (e.g. hidden fields etc). This is true as default |
-| uploadingText | Pass this to set a different text when uploading. |
-| uploadDoneText | Pass this to set a different upload done text. |
 
 h2. TODO
 
