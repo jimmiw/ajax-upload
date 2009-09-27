@@ -54,17 +54,11 @@ Westsworld.Upload = Class.create({
 	 */
 	createForm: function(previousObj) {
 		// creates the new iframe
-		var frameId = this._createIFrame();
+		var frameId = this._generateIFrameId();
 		// creates the new form
 		var formId = this._createForm(frameId, previousObj);
 		
-		// small hack to move the iframe inside the form
-		var frameObj = $(frameId);
-		// removes the iframe
-		Element.remove(frameId);
-		// inserts the iframe into the form obj
-		$(formId).insert(frameObj);
-		// hack end
+		this._createIFrame(frameId, formId);
 		
 		this._createFormFields(formId, frameId);
 	},
@@ -77,7 +71,7 @@ Westsworld.Upload = Class.create({
 	 */
 	_createForm: function(iframeId, previousObj) {
 		// creates the form template
-		var formTemplate = new Template('<form id="#{formId}" action="#{action}" method="#{method}" enctype="#{enctype}" target="#{iframeId}></form>');
+		var formTemplate = new Template('<form id="#{formId}" action="#{action}" method="#{method}" enctype="#{enctype}" target="#{iframeId}"></form>');
 		
 		// creates the form id, based on the actual form's name and a timestamp
 		var formId = 'form_for_'+this.getOption('formId')+'_'+new Date().getTime();
@@ -100,22 +94,32 @@ Westsworld.Upload = Class.create({
 	
 	/**
 	 *	Creates an iframe to use for upload.
-	 *	@return the id of the iframe created.
+	 *	@param iframeId           the id to use for the iframe
+	 *  @param formId             the formid, where the frame should be placed inside
 	 */
-	_createIFrame: function() {
+	_createIFrame: function(iframeId, formId) {
 		// creates the frame template
 		var iframeTemplate = new Template('<iframe id="#{iframeId}" name="#{iframeName}" style="display: none;"></iframe>');
 		
-		// creates the frame id, based on the actual form's name and timestamp
-		var iframeId = 'iframe_for_'+this.getOption('formId')+'_'+new Date().getTime();
-		
-		Element.insert(this.oldFormObj, {'after': iframeTemplate.evaluate({
-				iframeId: iframeId,
-				iframeName: iframeId
-			})
+		var iframeObj = iframeTemplate.evaluate({
+			iframeId: iframeId,
+			iframeName: iframeId
 		});
 		
-		return iframeId;
+		//var formObj = $(formId);
+		var formObj = Element.extend($(formId));
+		
+    Element.insert(formObj, {'after': iframeObj});
+	},
+	
+	
+	/**
+	 *  Generates a new iframe id
+	 *  @return the id generated.
+	 */
+	_generateIFrameId: function() {
+	  // creates the frame id, based on the actual form's name and timestamp
+		return 'iframe_for_'+this.getOption('formId')+'_'+new Date().getTime();
 	},
 	
 	/**
