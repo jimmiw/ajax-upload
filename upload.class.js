@@ -78,11 +78,11 @@ Westsworld.Upload = Class.create({
 		
 		// creates the new form
 		var formObj = formTemplate.evaluate({
-			formId: formId,
-			action: this.oldFormObj.action,
-			enctype: this.oldFormObj.enctype,
-			method: this.oldFormObj.method,
-			iframeId: iframeId
+			'formId': formId,
+			'action': this.oldFormObj.action,
+			'enctype': this.oldFormObj.enctype,
+			'method': this.oldFormObj.method,
+			'iframeId': iframeId
 		});
 		
 		// inserts the new form after the previous object.
@@ -102,8 +102,8 @@ Westsworld.Upload = Class.create({
 		var iframeTemplate = new Template('<iframe id="#{iframeId}" name="#{iframeName}" style="display: none;"></iframe>');
 		
 		var iframeObj = iframeTemplate.evaluate({
-			iframeId: iframeId,
-			iframeName: iframeId
+			'iframeId': iframeId,
+			'iframeName': iframeId
 		});
 		
 		//var formObj = $(formId);
@@ -153,10 +153,10 @@ Westsworld.Upload = Class.create({
 				var fieldId = 'field_for_'+inputObj.name+'_'+new Date().getTime();
 				
 				var fieldObj = fieldTemplate.evaluate({
-					type: inputObj.type,
-					name: inputObj.name,
-					value: inputObj.value,
-					id: fieldId
+					'type': inputObj.type,
+					'name': inputObj.name,
+					'value': inputObj.value,
+					'id': fieldId
 				});
 				
 				Element.insert(formId, {'bottom':fieldObj});
@@ -173,9 +173,9 @@ Westsworld.Upload = Class.create({
 		// adds a hidden field, that holds the form id information.
 		// this should be sent back from the upload script.
 		var formIdObjField = fieldTemplate.evaluate({
-			type: 'hidden',
-			name: 'javascript_formid',
-			value: formId,
+			'type': 'hidden',
+			'name': 'javascript_formid',
+			'value': formId
 		});
 		
 		Element.insert(formId, {'bottom':formIdObjField});
@@ -281,37 +281,13 @@ Westsworld.Upload = Class.create({
 	 *	@param options 				the options to set.
 	 */
 	setOptions: function(options) {
-		this.options = {
-			formId: null,
-			includeFields: true
-		};
-		
-		// adds the options to the options hash, if any are present
-		if(options) {
-			// sets the form id to use as a base form (get the information from)
-			if(options.formId != undefined) {
-				this.options.formId = options.formId;
-			}
-			// sets if the current fields in the form should be sent to the upload backend as well
-			if(options.includeFields != undefined) {
-				this.options.includeFields = options.includeFields;
-			}
-			// sets the uploading text
-			if(options.uploadingText != undefined) {
-				this.options.uploadingText = options.uploadingText;
-			}
-			else {
-				this.options.uploadingText = 'Uploading File...';
-			}
-			// sets the uploading done text.
-			if(options.uploadingText != undefined) {
-				this.options.uploadDoneText = options.uploadDoneText;
-			}
-			else {
-				this.options.uploadDoneText = 'Upload Done!';
-			}
-			
-		}
+	  // sets the default options, and merges in the new ones
+    this.options = $H({
+			'formId': null,
+			'includeFields': true,
+			'uploadingText': 'Uploading File...',
+			'uploadDoneText': 'Upload Done!'
+		}).merge(options);
 	},
 	
 	/** 
@@ -320,7 +296,7 @@ Westsworld.Upload = Class.create({
 	 *	@return true if the option exist else false
 	 */
 	hasOption: function(key) {
-		return this.options[key] != undefined;
+		return this.options.get(key) != undefined;
 	},
 	
 	/** 
@@ -329,6 +305,6 @@ Westsworld.Upload = Class.create({
 	 *	@return the option found
 	 */
 	getOption: function(key) {
-		return this.options[key];
+		return this.options.get(key);
 	}
 });
